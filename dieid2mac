@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+
+DEV=$1
+
+DIEID=/sys/firmware/devicetree/base/dieid
+IP=/sbin/ip
+
+[ -f $DIEID ] || exit 1
+MAC=`cat $DIEID | /var/lib/dieid2mac/txt2mac`
+
+case $DEV in
+    eth0)
+	$IP link set dev $DEV down
+	$IP link set dev $DEV address $MAC
+	$IP link set dev $DEV up
+	exit 0
+	;;
+esac
+
+exit 1

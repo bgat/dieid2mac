@@ -1,0 +1,1 @@
+KERNEL=="eth0", ACTION=="add", RUN+="/var/lib/dieid2mac/dieid2mac %k"

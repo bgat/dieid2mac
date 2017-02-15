@@ -1,0 +1,3 @@
+txt2mac /var/lib/dieid2mac
+dieid2mac /var/lib/dieid2mac
+eth0dieid.rules /etc/udev/rules.d
