@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: Bill Gatliff <bgat@billgatliff.com>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
+Vcs-Git: https://github.com/bgat/dieid2mac.git
 
 Package: dieid2mac
 Architecture: all
