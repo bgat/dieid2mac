@@ -17,32 +17,37 @@ u8_t galois_lfsr8(u8_t seed)
 	return lsr8(seed);
 }
 
-/* converts a string on stdin to a legal MAC address on stdout */
+static const u8_t INIT_SEED = 0xb8;
+
+/* converts data stdin to an ethernet MAC address on stdout */
 int main(int argc, const char *argv[], const char *env[])
 {
-	u8_t seed = 0;
+	u8_t seed = INIT_SEED;
 	u8_t mac[6];
-	int c = 0, wm;
+	int wm, c;
 
-	do {
+	while (1) {
 		c = fgetc(stdin);
-		seed = galois_lfsr8(seed ^ c);
-	} while(c != EOF);
+		if (c == EOF)
+			break;
+		if (!c)
+			continue;
+		seed = galois_lfsr8(c ^ seed);
+	}
 
-	for (wm = 0; wm < sizeof(mac); wm++)
-		mac[wm] = seed = galois_lfsr8(seed);
+	for (wm = 0; wm < sizeof(mac) / sizeof(*mac); wm++) {
+		seed = galois_lfsr8(seed);
+		mac[wm] = seed;
+	}
 
-	/* force unicast, locally-administered */
+	/* unicast, locally-administered */
 	mac[0] &= ~1;
-	mac[0] += 2;
+	mac[0] |= 2;
 
-	for (wm = 0; wm < sizeof(mac); wm++) {
+	for (wm = 0; wm < sizeof(mac) / sizeof(*mac); wm++) {
 		fprintf(stdout, "%s%02x", wm == 0 ? "" : ":", mac[wm]);
 	}
 	fprintf(stdout, "\n");
-
-	
-	/* 1401903128120022 */
 	return 0;
 }
 
