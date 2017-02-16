@@ -3,7 +3,8 @@
 
 DEV=$1
 
-DIEID=/sys/firmware/devicetree/base/dieid
+#DIEID=/sys/firmware/devicetree/base/dieid
+DIEID=/proc/cpuinfo
 IP=/sbin/ip
 
 [ -f $DIEID ] || exit 1
